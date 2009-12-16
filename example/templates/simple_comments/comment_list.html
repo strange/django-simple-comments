@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Listing Comments{% endblock %}
+{% block bodyclass %}comment-list{% endblock %}
+
+{% block content %}
+<h1>Comments</h1>
+{% for comment in comment_list %}
+{{ comment }}
+{% empty %}
+<p>No comments.</p>
+{% endfor %}
+{% endblock %}

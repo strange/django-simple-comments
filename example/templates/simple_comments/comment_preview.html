@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Post a Comment</h1>
+<h2>Preview</h2>
+<div class="comment clearfix">
+    <div class="meta">
+        <p class="poster">{{ comment.author_name }}</p>
+        <p class="date">0 minutes ago</p>
+    </div>
+    <div class="body">{{ comment.body|linebreaks }}</div>
+</div>
+
+<h2>Make changes</h2>
+<form action="." method="post" accept-charset="utf-8">
+    {{ form.as_p }}
+    {% for spam_prevention_form in spam_prevention_forms %}
+        {{ spam_prevention_form.as_p }}
+    {% endfor %}
+    <p><input type="submit" name="preview" value="Preview"> <input type="submit" name="submit" value="Post"></p>
+</form>    
+{% endblock %}
