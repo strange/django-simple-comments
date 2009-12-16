@@ -47,7 +47,8 @@ class BaseComment(models.Model):
             if not issubclass(target_field.__class__, models.ForeignKey):
                 raise TypeError
         except (models.FieldDoesNotExist, TypeError):
-            raise TypeError(u'Subclasses of BaseComment must add a foreign key field named target')
+            raise TypeError(u"Subclasses of BaseComment must add a foreign "
+                            u"key field named target")
     
     def denormalize_user_instance(self):
         """Set the author name, email and username on the model if a ``User``
@@ -64,9 +65,6 @@ class BaseComment(models.Model):
                 self.author_name = user.username
             self.author_email = user.email
             self.user_username = user.username
-
-    def get_absolute_url(self):
-        return '%s#comment-%s' % (self.target.get_absolute_url(), self.pk)
 
     def save(self, *args, **kwargs):
         self.denormalize_user_instance()
