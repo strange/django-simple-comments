@@ -45,3 +45,5 @@ INSTALLED_APPS = (
     'simple_comments',
     'example.articles',
 )
+
+print INSTALLED_APPS

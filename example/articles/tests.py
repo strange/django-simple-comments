@@ -1,28 +1,24 @@
 tests = """
->>> user = User.objects.create_user(username=u'x', email=u'x@x.com')
+>>> user = User.objects.create_user(username=u'username', email=u'x@x.com')
 
 >>> article = Article(title=u'test')
 >>> article.save()
 
->>> c1 = ArticleComment(target=article, user=user)
+>>> c1 = ArticleComment(target=article, user=user, body='comment')
 >>> c1.save()
 >>> c1.author_name
-u'x'
+u'username'
 >>> c1.author_email
 u'x@x.com'
 
->>> user.first_name = u'f'
->>> user.last_name = u'l'
+>>> user.first_name = u'first'
+>>> user.last_name = u'last'
 >>> user.save()
 
 >>> c2 = ArticleComment(target=article, user=user)
 >>> c2.save()
 >>> c2.author_name
-u'f l'
-
-# >>> form = EarTriviaForm(data={ 'question': EarTriviaForm.CORRECT_ANSWER })
-# >>> form.is_valid()
-# True
+u'first last'
 
 # config tests
 
@@ -30,9 +26,6 @@ u'f l'
 
 >>> form = b.get_form()()
 >>> print form.as_p()
-<p><label for="id_author_name">Author name:</label> <input id="id_author_name" type="text" name="author_name" maxlength="61" /></p>
-<p><label for="id_author_email">Author email:</label> <input id="id_author_email" type="text" name="author_email" maxlength="75" /></p>
-<p><label for="id_author_website">Author website:</label> <input id="id_author_website" type="text" name="author_website" maxlength="200" /></p>
 <p><label for="id_body">Body:</label> <textarea id="id_body" rows="10" cols="40" name="body"></textarea></p>
 
 # Test if comments are allowed. The first case should evaluate to False as 
@@ -60,6 +53,8 @@ False
 >>> comments.register('article', ArticleComment, ArticleCommentConfig)
 >>> comments.get_configuration('article').__class__
 <class 'example.articles.models.ArticleCommentConfig'>
+
+
 """
 
 import datetime
@@ -68,7 +63,7 @@ from django import forms
 from django.db import models
 from django.contrib.auth.models import User
 
-from simple_comments.forms import EarTriviaForm
+from simple_comments.forms import AkismetForm
 from simple_comments import comments
 
 from example.articles.models import Article

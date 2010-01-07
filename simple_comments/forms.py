@@ -27,7 +27,6 @@ class EarTriviaForm(SpamPreventionForm):
         super(EarTriviaForm, self).__init__(*args, **kwargs)
 
     def clean_question(self):
-        print 'here'
         value = self.cleaned_data["question"]
         if int(value) != self.CORRECT_ANSWER:
             raise forms.ValidationError(u'Think again!')

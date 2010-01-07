@@ -244,12 +244,12 @@ class CommentConfiguration(object):
         is_valid = form.is_valid() and \
                    all([f.is_valid() for f in spam_prevention_forms])
 
-        extra_context = {
+        extra_context.update({
             'form': form,
             'spam_prevention_forms': spam_prevention_forms,
             'target': target,
             'configuration': self,
-        }
+        })
 
         if not is_valid or request.method == 'GET':
             return direct_to_template(request,
