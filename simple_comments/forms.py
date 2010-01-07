@@ -68,7 +68,7 @@ class AkismetForm(SpamPreventionForm):
         api = Akismet(key=settings.AKISMET_API_KEY, blog_url=blog_url)
 
         if api.verify_key():
-            if not api.comment_check(smart_str(body), data=data):
+            if api.comment_check(smart_str(body), data=data):
                 raise forms.ValidationError(u"Your comment appears to be "
                                             u"spam.")
         return self.cleaned_data
