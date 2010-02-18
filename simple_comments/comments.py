@@ -208,7 +208,7 @@ class CommentConfiguration(object):
         """
         return [self.get_target_owner(target)]
 
-    def send_notifications(self, comment):
+    def dispatch_notifications(self, comment):
         users = self.get_notification_users(comment.target)
         if not self.send_notifications or \
            "notification" not in settings.INSTALLED_APPS or not users:
@@ -283,7 +283,7 @@ class CommentConfiguration(object):
         else:
             comment.save()
 
-        self.send_notifications(comment)
+        self.dispatch_notifications(comment)
 
         post_save_redirect_url = self.get_post_save_redirect_url(target,
                                                                  comment)
