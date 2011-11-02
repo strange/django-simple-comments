@@ -27,7 +27,7 @@ class EarTriviaForm(SpamPreventionForm):
         super(EarTriviaForm, self).__init__(*args, **kwargs)
 
     def clean_question(self):
-        value = self.cleaned_data["question"]
+        value = self.data["question"]
         if int(value) != self.CORRECT_ANSWER:
             raise forms.ValidationError(u'Think again!')
         return value
@@ -42,7 +42,7 @@ class HoneypotForm(SpamPreventionForm):
 
     def clean_honeypot(self):
         """Check that nothing's been entered into the honeypot."""
-        value = self.cleaned_data["honeypot"]
+        value = self.data["honeypot"]
         if value:
             raise forms.ValidationError(u'This field must remain empty.')
         return value
@@ -56,13 +56,14 @@ class AkismetForm(SpamPreventionForm):
     def clean(self):
         """Run the body of the comment against the akismet API."""
         from akismet import Akismet
+
         data = {
             'comment_type': 'comment',
             'referrer': self.request.META.get('HTTP_REFERER', ''),
             'user_ip': self.request.META.get('REMOTE_ADDR', ''),
             'user_agent': self.request.META.get('HTTP_USER_AGENT', '')
         }
-        body = self.cleaned_data.get('body')
+        body = self.data.get('body')
         blog_url = 'http://%s/' % Site.objects.get_current().domain
 
         api = Akismet(key=settings.AKISMET_API_KEY, blog_url=blog_url)
@@ -71,4 +72,4 @@ class AkismetForm(SpamPreventionForm):
             if api.comment_check(smart_str(body), data=data):
                 raise forms.ValidationError(u"Your comment appears to be "
                                             u"spam.")
-        return self.cleaned_data
+        return self.data
